@@ -31,6 +31,7 @@ rm -rf dist/*
 mkdir temp/
 rm -rf temp/*
 
+
 echo 'Preparing to build installers'
 
 echo 'Installing npm modules'
