@@ -7,7 +7,7 @@ import Listing from '../../models/listing/Listing';
 import Listings from '../../collections/Listings';
 import BaseVw from '../baseVw';
 import ListingDetail from '../modals/listingDetail/Listing';
-import StoreListings from './StoreListings';
+import ListingsGrid from './ListingsGrid';
 import CategoryFilter from './CategoryFilter';
 
 export default class extends BaseVw {
@@ -32,6 +32,8 @@ export default class extends BaseVw {
       freeShipping: false,
     };
 
+    this.viewType = 'grid';
+
     this.listenTo(this.collection, 'request', this.onRequest);
     this.listenTo(this.collection, 'update', this.onUpdateCollection);
 
@@ -53,6 +55,7 @@ export default class extends BaseVw {
       'change .js-filterShipsTo': 'onShipsToCheckBoxChange',
       'keyup .js-searchInput': 'onKeyupSearchInput',
       'change .js-sortBySelect': 'onChangeSortBy',
+      'click .js-toggleListGridView': 'onClickToggleListGridView',
     };
   }
 
@@ -146,6 +149,31 @@ export default class extends BaseVw {
     this.retryPressed = true;
     this.collection.fetch();
     this.$btnRetry.addClass('processing');
+  }
+
+  onClickToggleListGridView() {
+    this.viewType = this.viewType === 'list' ? 'grid' : 'list';
+  }
+
+  get viewType() {
+    return this._viewType;
+  }
+
+  set viewType(type) {
+    if (['list', 'grid'].indexOf(type) === '-1') {
+      throw new Error('The type provided is not one of the available types.');
+    }
+
+    const prevType = this._viewType;
+    this._viewType = type;
+
+    if (prevType) {
+      if (prevType !== this._viewType) {
+        this.$el.toggleClass('listView');
+      } else {
+        this.$el.addClass(type);
+      }
+    }
   }
 
   search(term) {
@@ -303,7 +331,7 @@ export default class extends BaseVw {
     }
 
     if (!this.storeListings) {
-      this.storeListings = new StoreListings({
+      this.storeListings = new ListingsGrid({
         collection: col,
         storeOwner: this.model.id,
       });
