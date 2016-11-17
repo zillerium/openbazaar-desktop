@@ -3,12 +3,13 @@ sudo: true
 os:
 - linux
 - osx
+osx_image: xcode8.2
 cache:
   directories:
   - node_modules
   - "/usr/local/Cellar"
 node_js:
-- '5'
+- 'node'
 before_script:
 - openssl aes-256-cbc -k "$ENCRYPTION_SECRET" -in .travis/cert.p12.enc -d -a -out ./.travis/cert.p12
 - openssl aes-256-cbc -k "$OB1_SECRET" -in .travis/ob1.cert.spc.enc -d -a -out ./.travis/ob1.cert.spc
