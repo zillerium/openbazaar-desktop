@@ -163,9 +163,13 @@ case "$TRAVIS_OS_NAME" in
     npm install -g electron-installer-dmg
 
     # Sign openbazaar-go binary
-    echo 'Signing Go binary'
+    echo 'Rename Go binary'
     mv temp/openbazaar-go-darwin-10.6-amd64 dist/osx/openbazaard
-    codesign --force --sign "$SIGNING_IDENTITY" dist/osx/openbazaard
+
+    security find-identity -v
+
+    echo 'Signing Go binary'
+    codesign --force --verbose=4 --sign "$SIGNING_IDENTITY" dist/osx/openbazaard
 
     echo 'Running Electron Packager...'
     electron-packager . OpenBazaar2 --out=dist -app-category-type=public.app-category.business --protocol-name=OpenBazaar --protocol=ob --platform=darwin --arch=x64 --icon=imgs/osx-tent.icns --version=${ELECTRONVER} --overwrite --app-version=$PACKAGE_VERSION
