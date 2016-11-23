@@ -10,7 +10,7 @@ Installation
 2. Navigate into the new folder created in (1)
   - `cd openbazaar-desktop`
 3. `npm install`
-
+ TEST
 Running
 -------
 
